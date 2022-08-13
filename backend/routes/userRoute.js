@@ -107,4 +107,29 @@ router.post('/login', (req, res) => {
         .catch(err => res.status(401).json({ msg: err }));
 });
 
+// Get API to get all users
+router.get('/getallusers/:_id', (req, res) => {
+
+    const current_user = req.params._id
+
+    // Finding all the users
+    User.find({})
+        .then(users => {
+
+            // Creating a new array of users 
+            all_users = []
+            users.forEach(item => {
+                if(item._id != current_user) {
+                    all_users.push({
+                        name: item.name,
+                        email: item.email
+                    })
+                }
+            })
+            res.status(200).json({ users: all_users})
+        })
+        .catch(err => res.status(401).json({ msg: err }))
+
+})
+
 module.exports = router;
