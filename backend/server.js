@@ -22,7 +22,7 @@ db.once('open', () => {
 
 // Declaring API routes
 app.use('/api/auth' , require('./routes/userRoute'));
-app.use('/api/file' , require('./routes/filesRoute'));
+app.use('/api/files' , require('./routes/filesRoute'));
 
 // Starting server
 const port = process.env.NODE_ENV || 5000;
