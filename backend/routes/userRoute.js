@@ -2,11 +2,10 @@ const express = require('express');
 const router = express.Router();
 const { generateKeyPair } = require('crypto');
  
-// Importing user schema
+// Importing schemas
 const User = require('../models/userModel');
-
-// Importing files schema
 const Files = require('../models/filesModel');
+const Requests = require('../models/requestModel')
 
 // Post API to register a user
 router.post('/register', (req, res) => {
@@ -50,7 +49,8 @@ router.post('/register', (req, res) => {
                                     // Converting the Buffer to hex string
                                     public: publicKey.toString('hex'),  
                                     private: privateKey.toString('hex')
-                                }
+                                },
+                                requests : []
                             });
             
                         // Adding the user to db
@@ -58,16 +58,26 @@ router.post('/register', (req, res) => {
                             .then(user => {
                                 
                                 const user_files = new Files({
-                                    _id: user._id
+                                    _id: user._id,
+                                    files: []
                                 })
 
                                 user_files.save()
-                                    .then(files => {
-                                        res.status(200).json({
-                                            msg: "Registration successful"
-                                        });
-                                    })
+                                .then(files => console.log("Created files"))
+                                .catch(err => res.status(401).json({ msg: err }));
+
+                                const user_requests = new Requests({
+                                    _id: user._id,
+                                    requests: []
+                                })
+
+                                user_requests.save()
+                                    .then(requests => console.log("Created requests"))
                                     .catch(err => res.status(401).json({ msg: err }));
+                                
+                                res.status(200).json({
+                                    msg: "Registration successful"
+                                });
                             })
                             .catch(err => res.status(401).json({ msg: err }));
                     }
@@ -108,7 +118,7 @@ router.post('/login', (req, res) => {
 });
 
 // Get API to get all users
-router.get('/getallusers/:_id', (req, res) => {
+router.get('/getusers/:_id', (req, res) => {
 
     const current_user = req.params._id
 
@@ -121,8 +131,8 @@ router.get('/getallusers/:_id', (req, res) => {
             users.forEach(item => {
                 if(item._id != current_user) {
                     all_users.push({
-                        name: item.name,
-                        email: item.email
+                        _id: item._id,
+                        name: item.name
                     })
                 }
             })
@@ -130,6 +140,22 @@ router.get('/getallusers/:_id', (req, res) => {
         })
         .catch(err => res.status(401).json({ msg: err }))
 
+})
+
+// Get API to get a user
+router.get('/getuser/:_id', (req, res) => {
+
+    const current_user = req.params._id
+
+    // Finding the user
+    User.findOne({current_user})
+        .then(user => {
+
+            if(!user) return res.status(401).json({ msg: "User dosent exists" });
+
+            res.status(200).json({ name: user.name, email: user.email})
+        })
+        .catch(err => res.status(401).json({ msg: err }))
 })
 
 module.exports = router;
