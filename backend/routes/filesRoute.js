@@ -18,7 +18,15 @@ router.get('/getfiles/:_id', (req, res) => {
             // If files are not present
             if(!files) return res.status(401).json({ msg: "Files not found for given _id"});
 
-            res.status(200).json({files : files.files})
+            all_files = []
+            files.files.forEach(item => {
+                all_files.push({
+                    filename: item.filename,
+                    filesize: item.filesize,
+                    shared: item.shared
+                })
+            })
+            res.status(200).json({files : all_files})
 
         })
         .catch(err => res.status(401).json({ msg: err }));
