@@ -1,1 +1,83 @@
-<p>register works!</p>
+<div class="pt-5 body">
+  <div class="container ">
+    <div class="row">
+      <div class="col"></div>
+      <div class="col-md-4">
+
+        <form [formGroup]="userRegisterData" (ngSubmit)="userRegister()" class="bg-white p-3">
+          <h4 class="text-dark text-center">Register</h4>
+          <hr>
+          <div class="my-3">
+            <label for="exampleInputEmail1" class="form-label">Name </label>
+            <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" formControlName="name">
+            <div *ngIf="userRegisterData.get('name')?.invalid && (userRegisterData.get('name')?.dirty || userRegisterData.get('name')?.touched)" class="text-danger">
+              This is required field
+            </div>
+          </div>
+          <div class="my-3">
+            <label for="exampleInputEmail1" class="form-label">Username (Email)</label>
+            <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" formControlName="email">
+            <div *ngIf="userRegisterData.get('email')?.invalid && (userRegisterData.get('email')?.dirty || userRegisterData.get('email')?.touched)" class="text-danger">
+              This is required field
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="exampleInputPassword1" class="form-label" >Password</label>
+            <input type="password" class="form-control" id="exampleInputPassword1" formControlName="password">
+            <div *ngIf="userRegisterData.get('password')?.invalid && (userRegisterData.get('password')?.dirty || userRegisterData.get('password')?.touched)" class="text-danger">
+              This is required field
+            </div>
+          </div>
+          <div class="mb-3">
+            <button type="submit" class="form-control btn btn-dark ms-auto mt-2" [disabled]="userRegisterData.invalid">Register</button>
+          </div>
+
+          <div class="signup_link" >Already a member? <a href="/login">Login</a></div>
+        </form>
+
+      </div>
+      <div class="col"></div>
+    </div>
+  </div>
+</div>
+
+
+<div>
+  <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" #successModal hidden></button>
+  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-body">
+          <div class="alert alert-success" role="alert">
+            {{response}}
+          </div>
+          <button type="button" class="btn btn-primary ms-0 me-0" data-bs-dismiss="modal" [routerLink]="['/dashboard']">Ok</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div>
+  <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#failModal" #failModal hidden></button>
+  <div class="modal fade" id="failModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-body">
+          <div class="alert alert-danger" role="alert">
+            {{response}}
+          </div>
+          <button type="button" class="btn btn-primary ms-0 me-0" data-bs-dismiss="modal">Ok</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+
+
+
+

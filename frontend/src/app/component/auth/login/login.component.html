@@ -1,19 +1,53 @@
-<body>
-  <div class="center">
-    <h1>Login</h1>
-    <form method="post">
-      <div class="txt_field">
-        <input type="text" required />
-        <span></span>
-        <label>Username</label>
+<div class="pt-5 body">
+  <div class="container ">
+    <div class="row">
+      <div class="col"></div>
+      <div class="col-md-4">
+
+        <form [formGroup]="userLoginData" (ngSubmit)="userLogin()" class="bg-white p-3">
+          <h4 class="text-dark text-center">Login</h4>
+          <hr>
+          <div class="my-3">
+            <label for="exampleInputEmail1" class="form-label">Username (Email)</label>
+            <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" formControlName="email">
+            <div *ngIf="userLoginData.get('email')?.invalid && (userLoginData.get('email')?.dirty || userLoginData.get('email')?.touched)" class="text-danger">
+              This is required field
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="exampleInputPassword1" class="form-label" >Password</label>
+            <input type="password" class="form-control" id="exampleInputPassword1" formControlName="password">
+            <div *ngIf="userLoginData.get('password')?.invalid && (userLoginData.get('password')?.dirty || userLoginData.get('password')?.touched)" class="text-danger">
+              This is required field
+            </div>
+          </div>
+          <div class="mb-3">
+            <button type="submit" class="form-control btn btn-dark ms-auto mt-2" [disabled]="userLoginData.invalid">Login</button>
+          </div>
+
+          <div class="signup_link" >Not a member? <a href="/register">Sign Up</a></div>
+        </form>
+
       </div>
-      <div class="txt_field">
-        <input type="password" required />
-        <span></span>
-        <label>Password</label>
-      </div>
-      <input type="submit" value="Login" />
-      <div class="signup_link">Not a member? <a href="#">Signup</a></div>
-    </form>
+      <div class="col"></div>
+    </div>
   </div>
-</body>
+</div>
+
+
+<div>
+  <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" #modal hidden></button>
+  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-body">
+          <div class="alert alert-danger" role="alert">
+            {{response}}
+          </div>
+          <button type="button" class="btn btn-primary ms-0 me-0" data-bs-dismiss="modal">Ok</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

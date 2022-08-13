@@ -8,7 +8,7 @@ import { User } from '../model/user';
 })
 export class AuthService {
 
-  apiUrl : string = 'http://localhost:5000/';
+  apiUrl : string = 'http://localhost:5000/api/auth/';
   constructor(private http: HttpClient) { }
 
   login(user : User) : Observable<any> {
