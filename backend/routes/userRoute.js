@@ -94,10 +94,7 @@ router.post('/login', (req, res) => {
 
     // Finding the user with given email
     User.findOne({ email })
-        .then(err, user => {
-
-            // If db call gives an error
-            if(err) return res.status(401).json({ err: err });
+        .then(user => {
 
             // If user dosent exists
             if(!user) return res.status(401).json({ msg: "User dosent exist" });
