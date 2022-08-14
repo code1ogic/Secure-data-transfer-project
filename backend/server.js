@@ -3,11 +3,13 @@ const app = express()
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser') 
 const cors = require('cors'); 
+const upload = require('express-fileupload')
 require('dotenv').config()
 
 // Body parser middleware to parse json
 app.use(bodyParser.json());
 app.use(cors({ origin: "*" }))
+app.use(upload())
 
 // Connection details of db
 const mongoURI = process.env.MONGO_URI;

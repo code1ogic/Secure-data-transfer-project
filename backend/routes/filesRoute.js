@@ -65,9 +65,9 @@ router.post('/upload', (req, res) => {
             if (isFilename) return res.status(401).json({ msg : "File name already exists"});
             
             s3.putObject({
-                Body: file, 
+                Body: req.files.file.data, 
                 Bucket: "secure-data-transfer", 
-                Key: filename
+                Key: req.files.file.name
             } ,(err, data) => {
                 console.log(err)
                 console.log(data)
