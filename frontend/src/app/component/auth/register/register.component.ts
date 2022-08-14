@@ -46,7 +46,6 @@ export class RegisterComponent implements OnInit {
     this.userObject.email = this.userRegisterData.value.email;
     this.userObject.password = this.userRegisterData.value.password;
 
-    let success = 'false';
     this.auth.register(this.userObject).subscribe(res => {
       this.response = res.msg;
       this.successModal?.nativeElement.click();

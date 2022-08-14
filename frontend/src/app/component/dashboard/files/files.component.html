@@ -1,0 +1,20 @@
+<form [formGroup]="myForm" (ngSubmit)="submit()">
+
+  <div class="row">
+    <div class="col-6">
+      <div class=" mb-3">
+        <input class="form-control" type="file" id="formFile" (change)="uploadFile($event)">
+        <div *ngIf="myForm.get('file')?.invalid && (myForm.get('file')?.dirty || myForm.get('file')?.touched)" class="text-danger">
+          This is required field
+        </div>
+      </div>
+    </div>
+    <div class="col-6">
+      <div class="mb-3 me-auto ms-auto">
+        <button class="btn btn-outline-primary" type="submit" [disabled]="myForm.invalid"  data-bs-dismiss="modal" >Submit</button>
+      </div>
+    </div>
+  </div>
+
+
+</form>
