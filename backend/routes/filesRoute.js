@@ -23,15 +23,6 @@ router.get('/getfiles/:_id', (req, res) => {
 
             // If files are not present
             if(!files) return res.status(401).json({ msg: "Files not found for given _id"});
-
-            s3.putObject({
-                Body: file, 
-                Bucket: "secure-data-transfer", 
-                Key: filename
-            } ,(err, data) => {
-                console.log(err)
-                console.log(data)
-            })
             
             all_files = []
             files.files.forEach(item => {
@@ -66,13 +57,22 @@ router.post('/upload', (req, res) => {
             };
 
             // Checking if filename is already there in db
-            isFilename = false
+            let isFilename = false
             files.files.forEach(item => {
                 if(filename == item.filename) isFilename = true
             })
 
             if (isFilename) return res.status(401).json({ msg : "File name already exists"});
             
+            s3.putObject({
+                Body: file, 
+                Bucket: "secure-data-transfer", 
+                Key: filename
+            } ,(err, data) => {
+                console.log(err)
+                console.log(data)
+            })
+
             // Adding the file in the db
             Files.findOneAndUpdate({ _id }, {$push: { "files": newFile }})
                 .then(file => res.status(200).json({ msg : "File uploaded successfully"}))
