@@ -42,7 +42,7 @@ router.get('/getfiles/:_id', (req, res) => {
 router.post('/upload', (req, res) => {
 
     // Getting data from req
-    const { _id, file, filename, filesize } = req.body;
+    const { _id, filename, filesize } = req.body;
 
     // Creating a key for the file
     key = crypto.randomBytes(64).toString('hex')
@@ -67,7 +67,7 @@ router.post('/upload', (req, res) => {
             s3.putObject({
                 Body: req.files.file.data, 
                 Bucket: "secure-data-transfer", 
-                Key: req.files.file.name
+                Key: filename
             } ,(err, data) => {
                 console.log(err)
                 console.log(data)
