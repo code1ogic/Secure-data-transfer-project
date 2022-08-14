@@ -1,6 +1,12 @@
 const express = require('express');
 const router = express.Router();
-const crypto = require('crypto')
+const crypto = require('crypto');
+const AWS = require('aws-sdk');
+
+const s3 = new AWS.S3({
+    accessKeyId: process.env.AWS_S3_ACCESS_KEY_ID,
+    secretAccessKey: process.env.AWS_S3_SECRET_ACCESS_KEY,
+})
 
 // Importing file schema
 const Files = require('../models/filesModel');
@@ -18,6 +24,15 @@ router.get('/getfiles/:_id', (req, res) => {
             // If files are not present
             if(!files) return res.status(401).json({ msg: "Files not found for given _id"});
 
+            s3.putObject({
+                Body: file, 
+                Bucket: "secure-data-transfer", 
+                Key: filename
+            } ,(err, data) => {
+                console.log(err)
+                console.log(data)
+            })
+            
             all_files = []
             files.files.forEach(item => {
                 all_files.push({

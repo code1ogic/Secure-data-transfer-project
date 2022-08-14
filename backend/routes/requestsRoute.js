@@ -27,7 +27,7 @@ router.post('/sendrequest', (req, res) => {
     Requests.findOne({receiver_id})
         .then(requests => {
 
-            if(!requests) res.status(401).json({ msg: "Request sfor given user dosent exists" });
+            if(!requests) res.status(401).json({ msg: "Request for given user dosent exists" });
 
             const new_request = {
                 sender_id, filename, filesize, status: "Pending"
