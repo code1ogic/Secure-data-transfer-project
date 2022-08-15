@@ -21,6 +21,14 @@ const RequestsSchema = new Schema({
                 type: String,
                 required: true
             },
+            key : {
+                type: String,
+                required: true
+            },
+            iv : {
+                type: String,
+                required: true
+            },
             status : {
                 type: String,
                 required: true
