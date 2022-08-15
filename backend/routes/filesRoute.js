@@ -97,27 +97,30 @@ router.post('/upload', async (req, res) => {
 router.post('/download', (req, res) => {
 
     const { _id, filename } = req.body
-    console.log(_id)
 
     Files.findOne({_id})
         .then(files => {
+            // console.log(files.files)
+            let found = false
 
             files.files.forEach(item => {
                 if(item.filename == filename){
                     
-                    // console.log(`${_id}/${filename}`)
+                    found = true
+                    
                     s3.getObject({
                         Bucket: "secure-data-transfer", 
                         Key: `${_id}/${filename}`
                     }, (err,data) => {
                         // console.log(err)
                         demo = data.Body
-                        console.log(demo)
                         key = Buffer.from(item.key, 'hex');
                         iv = Buffer.from(item.iv, 'hex');
                         
                         var decipher = crypto.createDecipheriv(algorithm, key, iv);
                         var decrypted = Buffer.concat([decipher.update(demo), decipher.final()]);
+
+                        // res.status(200).json({file: decrypted, content_type: item.content_type, filename: item.fileName})
 
                         var readStream = new stream.PassThrough();
                         readStream.end(decrypted);
@@ -128,12 +131,11 @@ router.post('/download', (req, res) => {
                         readStream.pipe(res);
                     })
                 }
-                else return res.status(401).json({ msg: "File not found"});
             })
+            if(!found) res.status(401).json({ msg: err })
 
         })
         .catch(err => res.status(401).json({ msg: err }))
-    
 })
 
 module.exports = router;
