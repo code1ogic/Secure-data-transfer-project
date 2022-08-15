@@ -22,17 +22,14 @@ router.post('/register', (req, res) => {
 
             // Generating key pair
             generateKeyPair('rsa', {
-                    modulusLength: 530,    
-                    publicExponent: 0x10101,
+                    modulusLength: 2048,
                     publicKeyEncoding: {
                         type: 'pkcs1',
-                        format: 'der'
+                        format: 'pem'
                     },
                     privateKeyEncoding: {
-                        type: 'pkcs8',
-                        format: 'der',
-                        cipher: 'aes-192-cbc',
-                        passphrase: email
+                        type: 'pkcs1',
+                        format: 'pem',
                     }
                 }, 
                 (err, publicKey, privateKey) => {
