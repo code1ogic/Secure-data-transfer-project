@@ -29,6 +29,10 @@ const RequestsSchema = new Schema({
                 type: String,
                 required: true
             },
+            content_type : {
+                type: String,
+                required: true
+            },
             status : {
                 type: String,
                 required: true
