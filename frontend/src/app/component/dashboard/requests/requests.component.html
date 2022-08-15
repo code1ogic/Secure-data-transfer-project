@@ -1,18 +1,45 @@
-<div class="container-fluid bg-light">
+<div class="container">
   <!-- pending requests -->
+  <div class="row" *ngIf="allRequests">
+    <h4 class="text-primary my-2">Pending Requests : </h4>
+  </div>
+  <div class="row" *ngFor="let request of allRequests">
+    <div class="col-11 card m-3 shadow" *ngIf="request.status === 'Pending'">
+      <div class="row mt-2 mb-2">
+        <div class="col-8">
+          <p>
+            <b>File Name :</b> {{ request.filename }}  <b class="ms-5">File Size :</b> {{ request.filesize  }}
+         </p>
+        </div>
+        <div class="col-4 text-end">
+          <button (click)="acceptRequest(request)" class="btn btn-outline-success me-3">Accept</button>
+          <button (click)="rejectRequest(request)" class="btn btn-outline-danger">Reject</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <hr>
 
   <!-- history -->
+  <div class="row">
+    <h4 class="text-muted my-2">History : </h4>
+  </div>
   <div class="row" *ngFor="let request of allRequests">
-    <div class="col-12 card m-3">
-      <h5>{{ request.filename }}</h5>
-      <h5>{{ request.filesize }}</h5>
-      <h5>{{ request.sender_id }}</h5>
-      <div class="row">
-        <div class="col-6">
-          <button (click)="acceptRequest(request)" class="btn btn-outline-success">Accept</button>
+    <div class="col-12 card mt-2 mb-0 shadow" *ngIf="request.status !== 'Pending'">
+      <div class="row mt-2">
+        <div class="col-8">
+          <p>
+            <b>File Name :</b> {{ request.filename }}  <b class="ms-5">File Size :</b> {{ request.filesize  }}
+         </p>
         </div>
-        <div class="col-6">
-          <button (click)="rejectRequest(request)" class="btn btn-outline-danger">Reject</button>
+        <div class="col-4 text-end" >
+          <h6 *ngIf="request.status === 'Accepted'" class="text-success">
+            Accepted
+          </h6>
+          <h6 class="text-danger" *ngIf="request.status === 'Rejected'">
+            Rejected
+          </h6>
         </div>
       </div>
     </div>

@@ -41,9 +41,7 @@ export class DataService {
    }
 
    downloadFile(fileData : any) : any {
-    //return this.http.post<any>(this.filesUrl+'download', fileData)
-    const options = { responseType:"blob"  };
-    return this.http.post(this.filesUrl+'download', fileData);
+    return this.http.post(this.filesUrl+'download', fileData, {responseType:"blob"});
    }
 
   getUsers(id : string) : Observable<any> {

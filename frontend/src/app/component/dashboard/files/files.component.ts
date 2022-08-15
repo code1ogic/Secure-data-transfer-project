@@ -17,6 +17,8 @@ export class FilesComponent implements OnInit {
     file: new FormControl('', [Validators.required]),
   });
 
+  textColors : any = ['text-primary','text-info','text-warning','text-danger','text-success']
+
   user_id: any = '';
   uploadedFiles: FileModel[] = [];
   selectedFile: FileModel = {
@@ -155,17 +157,10 @@ export class FilesComponent implements OnInit {
       filename : this.selectedFile.filename
     }
     this.dataService.downloadFile(fileData).subscribe((res : any) => {
-      this.downloadFile1(res);
-      //console.log(res);
+      console.log(res);
+      FileSaver.saveAs(res, this.selectedFile.filename)
     }, (err :any) => {
       console.log(err);
     })
   }
-
-  downloadFile1(res: any) {
-    console.log(res);
-    const file = new Blob([res.file.data], { type: res.content_type });
-    FileSaver.saveAs(file, res.File);
-     //console.log(res);
-    }
 }

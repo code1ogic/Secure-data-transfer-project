@@ -64,7 +64,7 @@ export class RequestsComponent implements OnInit {
   acceptRequest(request : Request) {
     request.receiver_id = this.userId;
     this.dataService.acceptRequest(request).subscribe(res => {
-      console.log(res);
+      this.ngOnInit();
     }, err => {
       console.log(err)
     })
@@ -73,7 +73,7 @@ export class RequestsComponent implements OnInit {
   rejectRequest(request : Request) {
     request.receiver_id = this.userId;
     this.dataService.rejectRequest(request).subscribe(res => {
-      console.log(res);
+      this.ngOnInit();
     }, err => {
       console.log(err)
     })
