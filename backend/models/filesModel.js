@@ -17,7 +17,15 @@ const FilesSchema = new Schema({
                 type: String,
                 required: true
             },
+            content_type : {
+                type: String,
+                required: true
+            },
             key : {
+                type: String,
+                required: true
+            },
+            iv : {
                 type: String,
                 required: true
             },
