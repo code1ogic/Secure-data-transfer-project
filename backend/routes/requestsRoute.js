@@ -162,11 +162,11 @@ router.post('/accept', (req, res) => {
                     filename, filesize, content_type,
                     key: decryptedKey,
                     iv: decryptedIv,
-                    shared: "Accepted"
+                    shared: true
                 }
 
                 Files.findOneAndUpdate({_id: receiver_id}, {$push : { "files": new_file}})
-                    .then(requests => {
+                    .then(files => {
 
                         Requests.findOneAndUpdate({ _id: receiver_id, "requests.filename": filename}, {$set : { "requests.$.status": "Accepted" }})
                             .then(files => {
@@ -179,11 +179,12 @@ router.post('/accept', (req, res) => {
                     .catch(err => res.status(401).json({ msg: err}))
             })
         })
+        .catch(err => res.status(401).json({ msg: err}))
 })
 
 router.post('/reject', (req, res) => {
 
-    const { sender_id, receiver_id, filename, filesize, key, iv, content_type } = req.body
+    const { receiver_id, filename} = req.body
 
     Requests.findOneAndUpdate({ _id: receiver_id, "requests.filename": filename}, {$set : { "requests.$.status": "Rejected" }})
         .then(files => {
