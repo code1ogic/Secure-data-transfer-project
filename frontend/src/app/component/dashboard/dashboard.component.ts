@@ -24,6 +24,7 @@ export class DashboardComponent implements OnInit {
 
   showFiles() {
     this.setoff();
+    
     this.files = true;
   }
 

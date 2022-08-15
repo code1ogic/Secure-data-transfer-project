@@ -23,18 +23,31 @@ export class DataService {
     return this.http.post<any>(this.requestsUrl+'sendrequest',requestObj);
   }
 
+  acceptRequest(requestObj : Request) : Observable<any> {
+    return this.http.post<any>(this.requestsUrl+'accept',requestObj);
+  }
 
-   getFiles(id : string) : Observable<File[]> {
-    return this.http.get<File[]>(this.filesUrl+'getfiles/'+id);
+  rejectRequest(requestObj : Request) : Observable<any> {
+    return this.http.post<any>(this.requestsUrl+'reject',requestObj);
+  }
+
+
+   getFiles(id : string) : Observable<any> {
+    return this.http.get<any>(this.filesUrl+'getfiles/'+id);
    }
 
    uploadFile(formData : FormData) : Observable<any> {
     return this.http.post<any>(this.filesUrl+'upload',formData);
    }
 
+   downloadFile(fileData : any) : any {
+    //return this.http.post<any>(this.filesUrl+'download', fileData)
+    const options = { responseType:"blob"  };
+    return this.http.post(this.filesUrl+'download', fileData);
+   }
 
-  getUsers(id : string) : Observable<User[]> {
-    return this.http.get<User[]>(this.usersUrl+'getusers/'+id);
+  getUsers(id : string) : Observable<any> {
+    return this.http.get<any>(this.usersUrl+'getusers/'+id);
   }
 
   getUser(id : string) : Observable<User> {

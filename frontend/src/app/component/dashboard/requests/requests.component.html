@@ -1,11 +1,20 @@
-<div class="container-fluid">
-
+<div class="container-fluid bg-light">
   <!-- pending requests -->
 
-
-
   <!-- history -->
-
-  
-
+  <div class="row" *ngFor="let request of allRequests">
+    <div class="col-12 card m-3">
+      <h5>{{ request.filename }}</h5>
+      <h5>{{ request.filesize }}</h5>
+      <h5>{{ request.sender_id }}</h5>
+      <div class="row">
+        <div class="col-6">
+          <button (click)="acceptRequest(request)" class="btn btn-outline-success">Accept</button>
+        </div>
+        <div class="col-6">
+          <button (click)="rejectRequest(request)" class="btn btn-outline-danger">Reject</button>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

@@ -1,5 +1,6 @@
 export interface FileModel {
   filename: string,
   filesize: string,
-  shared: boolean
+  shared: boolean,
+  actualfilesize: string
 }
