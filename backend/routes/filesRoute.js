@@ -82,13 +82,11 @@ router.post('/upload', async (req, res) => {
             } ,(err, data) => {
                 console.log(err)
                 console.log(data)
-            })
-
-            // Adding the file in the db
-            Files.findOneAndUpdate({ _id }, {$push: { "files": newFile }})
+                // Adding the file in the db
+                Files.findOneAndUpdate({ _id }, {$push: { "files": newFile }})
                 .then(file => res.status(200).json({ msg : "File uploaded successfully"}))
                 .catch(err => res.status(401).json({ msg: err}))
-
+                })
         })
         .catch(err => res.status(401).json({ msg: err }));
 
