@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http'
+import { HttpClient, HttpEvent } from '@angular/common/http'
 import { Observable } from 'rxjs';
 import { Request } from '../model/request';
 import { User } from '../model/user';
@@ -37,7 +37,7 @@ export class DataService {
    }
 
    uploadFile(formData : FormData) : Observable<any> {
-    return this.http.post<any>(this.filesUrl+'upload',formData);
+    return this.http.post<any>(this.filesUrl+'upload',formData,{reportProgress: true, observe: 'events'});
    }
 
    downloadFile(fileData : any) : any {

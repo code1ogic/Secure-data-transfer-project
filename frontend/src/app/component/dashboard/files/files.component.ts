@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpEvent, HttpEventType, HttpResponse } from '@angular/common/http';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
 import { FileModel } from 'src/app/model/file-model';
@@ -47,6 +47,7 @@ export class FilesComponent implements OnInit {
   };
   error: boolean = false;
   success: boolean = false;
+  progress: number = 0;
 
   constructor(private http: HttpClient, private dataService: DataService, private fb: FormBuilder) { }
 
@@ -93,10 +94,18 @@ export class FilesComponent implements OnInit {
     formData.append("filesize", file.size);
     formData.append("file", file);
 
-    this.dataService.uploadFile(formData).subscribe(res => {
-      this.myForm.reset();
-      this.response = res.msg;
-      this.modalSuccess?.nativeElement.click();
+    this.dataService.uploadFile(formData).subscribe(event => {
+      switch (event.type) {
+        case HttpEventType.UploadProgress:
+          if(event.total) {
+            this.progress = Math.round(event.loaded / (event.total) * 100);
+            console.log(`Uploaded! ${this.progress}%`);
+          }
+          break;
+        case HttpEventType.Response:
+          this.response = event.body.msg;
+          this.modalSuccess?.nativeElement.click();
+      }
     }, err => {
       this.myForm.reset();
       this.response = err.error.msg;
@@ -162,5 +171,9 @@ export class FilesComponent implements OnInit {
     }, (err :any) => {
       console.log(err);
     })
+  }
+
+  modalClick() {
+    window.location.reload();
   }
 }

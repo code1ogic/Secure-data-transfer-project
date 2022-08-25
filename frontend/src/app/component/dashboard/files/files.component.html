@@ -24,6 +24,10 @@
         </div>
       </form>
 
+      <div class="progress form-group mt-2" *ngIf="progress > 0">
+        <div class="progress-bar progress-bar-striped bg-success" role="progressbar" [style.width.%]="progress">
+        </div>
+    </div>
     </div>
   </div>
 
@@ -116,7 +120,7 @@
             <h6>Download : </h6>
           </div>
           <div class="col-9">
-            <a class="text-success me-auto ms-auto mb-2 pb-2" (click)="downloadFile()" >
+            <a class="btn text-success me-auto ms-auto mb-2 pb-2" (click)="downloadFile()" >
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-download" viewBox="0 0 16 16">
                 <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/>
                 <path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"/>
@@ -155,7 +159,7 @@
           <div class="alert alert-success" role="alert">
             {{response}}
           </div>
-          <button type="button" class="btn btn-primary ms-0 me-0" data-bs-dismiss="modal" (click)="ngOnInit()">Ok</button>
+          <button type="button" class="btn btn-primary ms-0 me-0" data-bs-dismiss="modal" (click)="modalClick()">Ok</button>
         </div>
       </div>
     </div>
@@ -165,8 +169,8 @@
 
 <!-- failure module -->
 <div>
-  <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" #modalFailure hidden></button>
-  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal1" #modalFailure hidden></button>
+  <div class="modal fade" id="exampleModal1" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-body">
