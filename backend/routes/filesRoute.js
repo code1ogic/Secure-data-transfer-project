@@ -79,14 +79,14 @@ router.post('/upload', async (req, res) => {
                 Body: encrypted, 
                 Bucket: "secure-data-transfer", 
                 Key: `${_id}/${filename}`
-            } ,(err, data) => {
+            }, (err, data) => {
                 console.log(err)
                 console.log(data)
                 // Adding the file in the db
                 Files.findOneAndUpdate({ _id }, {$push: { "files": newFile }})
                 .then(file => res.status(200).json({ msg : "File uploaded successfully"}))
                 .catch(err => res.status(401).json({ msg: err}))
-                })
+            })
         })
         .catch(err => res.status(401).json({ msg: err }));
 
@@ -109,7 +109,7 @@ router.post('/download', (req, res) => {
                     s3.getObject({
                         Bucket: "secure-data-transfer", 
                         Key: `${_id}/${filename}`
-                    }, (err,data) => {
+                    }, (err ,data) => {
                         // console.log(err)
                         demo = data.Body
                         key = Buffer.from(item.key, 'hex');
@@ -133,7 +133,7 @@ router.post('/download', (req, res) => {
             if(!found) res.status(401).json({ msg: err })
 
         })
-        .catch(err => res.status(401).json({ msg: err }))
+        .catch(err => res.status(401).json({ msg: err}))
 })
 
 module.exports = router;
