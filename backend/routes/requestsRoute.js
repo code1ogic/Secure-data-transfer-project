@@ -50,62 +50,59 @@ router.post('/sendrequest', (req, res) => {
 
             if(!sender_key || !sender_iv) return res.status(401).json({ msg: "File not found" })
 
-            receiver_id.forEach(item => {
-
-                User.findById(ObjectId(item))
-                    .then(user => {
-        
-                    // If user dosent exists
-                    if(!user) return res.status(401).json({ msg: "Receiver dosent exist" });
-        
-                    public_key = user.keys.public
-                    
-                    Requests.findOne({_id: item})
-                        .then(requests => {
-        
-                            if(!requests) res.status(401).json({ msg: "Request for given user dosent exists" });
-        
-                            let request_exists = false
-                            requests.requests.forEach(item => {
-                                if(item.filename == filename){
-                                    if(item.status != "Rejected") request_exists = true
-                                }
-                            })
-
-                            if(request_exists) return res.status(401).json({ msg: "Request for given file already exists" });
-        
-                            key = crypto.publicEncrypt(
-                                {
-                                    key: public_key,
-                                    padding: crypto.constants.RSA_PKCS1_OAEP_PADDING,
-                                    oaepHash: 'sha256',
-                                },
-                                // We convert the data string to a buffer using `Buffer.from`
-                                Buffer.from(sender_key)
-                            ).toString('hex')
-                            
-                            iv = crypto.publicEncrypt(
-                                {
-                                    key: public_key,
-                                    padding: crypto.constants.RSA_PKCS1_OAEP_PADDING,
-                                    oaepHash: 'sha256',
-                                },
-                                // We convert the data string to a buffer using `Buffer.from`
-                                Buffer.from(sender_iv)
-                            ).toString('hex')
-        
-                            const new_request = {
-                                sender_id, filename, filesize, key, iv, content_type,status: "Pending",
-                            };
-        
-                            Requests.findOneAndUpdate({_id: item}, {$push: { "requests": new_request}})
-                                .then(requests => res.status(200).json({ msg : "File request sent successfully"}))
-                                .catch(err => res.status(401).json({ msg: err}))
+            User.findById(ObjectId(receiver_id))
+                .then(user => {
+    
+                // If user dosent exists
+                if(!user) return res.status(401).json({ msg: "Receiver dosent exist" });
+    
+                public_key = user.keys.public
+                
+                Requests.findOne({_id: receiver_id})
+                    .then(requests => {
+    
+                        if(!requests) res.status(401).json({ msg: "Request for given user dosent exists" });
+    
+                        let request_exists = false
+                        requests.requests.forEach(item => {
+                            if(item.filename == filename){
+                                if(item.status != "Rejected") request_exists = true
+                            }
                         })
-                        .catch(err => res.status(401).json({ msg: err }))
+
+                        if(request_exists) return res.status(401).json({ msg: "Request for given file already exists" });
+    
+                        key = crypto.publicEncrypt(
+                            {
+                                key: public_key,
+                                padding: crypto.constants.RSA_PKCS1_OAEP_PADDING,
+                                oaepHash: 'sha256',
+                            },
+                            // We convert the data string to a buffer using `Buffer.from`
+                            Buffer.from(sender_key)
+                        ).toString('hex')
+                        
+                        iv = crypto.publicEncrypt(
+                            {
+                                key: public_key,
+                                padding: crypto.constants.RSA_PKCS1_OAEP_PADDING,
+                                oaepHash: 'sha256',
+                            },
+                            // We convert the data string to a buffer using `Buffer.from`
+                            Buffer.from(sender_iv)
+                        ).toString('hex')
+    
+                        const new_request = {
+                            sender_id, filename, filesize, key, iv, content_type,status: "Pending",
+                        };
+    
+                        Requests.findOneAndUpdate({_id: receiver_id}, {$push: { "requests": new_request}})
+                            .then(requests => res.status(200).json({ msg : "File request sent successfully"}))
+                            .catch(err => res.status(401).json({ msg: err}))
                     })
                     .catch(err => res.status(401).json({ msg: err }))
                 })
+                .catch(err => res.status(401).json({ msg: err }))
         })
         .catch(err => res.status(401).json({ msg: err }))
 })
