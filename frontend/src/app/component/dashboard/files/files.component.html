@@ -134,15 +134,24 @@
            <h6> Users : </h6>
           </div>
           <div class="col-9">
-            <select class="form-select form-select-sm" aria-label="Default select example" [(ngModel)]="selectedUserId">
-              <option value="select" disabled>Select User</option>
-              <option value="{{user._id}}" *ngFor="let user of allUsers">{{user.name}}</option>
-            </select>
+            <div>
+              <form [formGroup]="dropDownForm">
+                <ng-multiselect-dropdown
+                   [settings]="dropdownSettings"
+                   [data]="allUsers"
+                   formControlName="selectedUsers"
+                   (onSelect)="onItemSelect($event)"
+                  (onSelectAll)="onSelectAll($event)"
+                  (onDeSelect)="onItemDeSelect($event)"
+                  (onDeSelectAll)="onUnSelectAll()">
+                </ng-multiselect-dropdown>
+              </form>
+            </div>
           </div>
         </div>
 
       </div>
-      <div class="modal-footer" *ngIf="selectedUserId" >
+      <div class="modal-footer" *ngIf="selectedUsers.length > 0" >
         <button type="button" class="btn btn-primary" (click)="shareFile()">Share</button>
       </div>
     </div>

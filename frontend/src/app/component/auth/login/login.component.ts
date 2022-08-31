@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import {ViewChild, ElementRef} from '@angular/core';
 import { AuthService } from 'src/app/service/auth.service';
 import { User } from 'src/app/model/user';
@@ -23,12 +23,12 @@ export class LoginComponent implements OnInit {
     password: ''
   };
   response : String ='';
-  userLoginData = new FormGroup({
-    email : new FormControl(),
-    password : new FormControl()
+  userLoginData = new UntypedFormGroup({
+    email : new UntypedFormControl(),
+    password : new UntypedFormControl()
   })
 
-  constructor(private fb : FormBuilder, private auth : AuthService, private route : Router) { }
+  constructor(private fb : UntypedFormBuilder, private auth : AuthService, private route : Router) { }
 
   ngOnInit(): void {
     this.userLoginData = this.fb.group({

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { ViewChild, ElementRef } from '@angular/core';
 import { User } from 'src/app/model/user';
 import { AuthService } from 'src/app/service/auth.service';
@@ -25,13 +25,13 @@ export class RegisterComponent implements OnInit {
     name: '',
     password: ''
   };
-  userRegisterData = new FormGroup({
-    name: new FormControl(),
-    email: new FormControl(),
-    password: new FormControl()
+  userRegisterData = new UntypedFormGroup({
+    name: new UntypedFormControl(),
+    email: new UntypedFormControl(),
+    password: new UntypedFormControl()
   })
 
-  constructor(private fb: FormBuilder, private auth: AuthService, private route : Router) { }
+  constructor(private fb: UntypedFormBuilder, private auth: AuthService, private route : Router) { }
 
   ngOnInit(): void {
     this.userRegisterData = this.fb.group({

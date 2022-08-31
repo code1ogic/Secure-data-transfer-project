@@ -11,6 +11,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DashboardComponent } from './component/dashboard/dashboard.component';
 import { RequestsComponent } from './component/dashboard/requests/requests.component';
 import { FilesComponent } from './component/dashboard/files/files.component';
+import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,7 @@ import { FilesComponent } from './component/dashboard/files/files.component';
     HttpClientModule,
     ReactiveFormsModule,
     FormsModule,
-
+    NgMultiSelectDropDownModule.forRoot()
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -1,10 +1,11 @@
 import { HttpClient, HttpEvent, HttpEventType, HttpResponse } from '@angular/common/http';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
+import { UntypedFormGroup, UntypedFormControl, Validators, UntypedFormBuilder } from '@angular/forms';
 import { FileModel } from 'src/app/model/file-model';
 import { User } from 'src/app/model/user';
 import { DataService } from 'src/app/service/data.service';
 import * as FileSaver from 'file-saver';
+import { IDropdownSettings } from 'ng-multiselect-dropdown';
 
 @Component({
   selector: 'app-files',
@@ -13,8 +14,8 @@ import * as FileSaver from 'file-saver';
 })
 export class FilesComponent implements OnInit {
 
-  myForm = new FormGroup({
-    file: new FormControl('', [Validators.required]),
+  myForm = new UntypedFormGroup({
+    file: new UntypedFormControl('', [Validators.required]),
   });
 
   textColors : any = ['text-primary','text-info','text-warning','text-danger','text-success']
@@ -29,6 +30,7 @@ export class FilesComponent implements OnInit {
   };
 
   selectedUserId: string = '';
+  userSelected : boolean = false;
 
   @ViewChild('modalSuccess')
   modalSuccess: ElementRef | undefined;
@@ -48,8 +50,13 @@ export class FilesComponent implements OnInit {
   error: boolean = false;
   success: boolean = false;
   progress: number = 0;
+  dropdownSettings:IDropdownSettings={};
+  selectedUsers : any[] =[];
+  dropDownForm =  new UntypedFormGroup({
+    selectedUsers : new UntypedFormControl()
+  })
 
-  constructor(private http: HttpClient, private dataService: DataService, private fb: FormBuilder) { }
+  constructor(private http: HttpClient, private dataService: DataService, private fb: UntypedFormBuilder) { }
 
   ngOnInit(): void {
     this.user_id = localStorage.getItem('user_id');
@@ -76,6 +83,13 @@ export class FilesComponent implements OnInit {
     };
     this.success = false;
     this.error = false;
+    this.dropdownSettings = {
+      idField: '_id',
+      textField: 'name',
+      allowSearchFilter: true
+    };
+    this.selectedUsers = [];
+    this.userSelected = false;
   }
 
   selectFile(event: any) {
@@ -175,5 +189,25 @@ export class FilesComponent implements OnInit {
 
   modalClick() {
     window.location.reload();
+  }
+
+  onItemSelect(item: any) {
+    this.selectedUsers.push(item);
+    console.log(this.selectedUsers)
+  }
+  onItemDeSelect(item: any) {
+    const newArr: any[] = this.selectedUsers.filter((element) => {
+      return element._id !== item._id;
+    });
+    this.selectedUsers = newArr;
+    console.log(this.selectedUsers)
+  }
+  onSelectAll(items: any) {
+     this.selectedUsers = items;
+     console.log(this.selectedUsers)
+  }
+  onUnSelectAll() {
+      this.selectedUsers = [];
+      console.log(this.selectedUsers)
   }
 }
