@@ -118,9 +118,12 @@ router.post('/accept', (req, res) => {
     Files.findOne({_id: receiver_id})
         .then(files => {
 
+            let file_exists = false
             files.files.forEach(item => {
-                if(item.filename == filename) return res.status(401).json({ msg: "File already exists" });
+                if(item.filename == filename) file_exists = true
             })
+
+            if(file_exists) return res.status(401).json({ msg: "File already exists" });
 
             s3.copyObject({
                 Bucket: "secure-data-transfer", 
