@@ -27,13 +27,6 @@ app.use('/api/auth', require('./routes/userRoute'));
 app.use('/api/files', require('./routes/filesRoute'));
 app.use('/api/requests', require('./routes/requestsRoute'))
 
-app.get('/api/demo', (req,res) => {
-	res.write("demo ")
-	res.write("demo1 ")
-	res.write("demo2 ")
-	res.end("demo3")
-}) 
-
 // Starting server
 const port = process.env.NODE_ENV || 5000;
 app.listen(port, () => console.log(`Server started at port ${port}`));

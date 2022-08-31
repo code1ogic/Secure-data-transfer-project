@@ -65,11 +65,14 @@ router.post('/sendrequest', (req, res) => {
         
                             if(!requests) res.status(401).json({ msg: "Request for given user dosent exists" });
         
+                            let request_exists = false
                             requests.requests.forEach(item => {
                                 if(item.filename == filename){
-                                    if(item.status != "Rejected") return res.status(401).json({ msg: "Request for given file already exists" });
+                                    if(item.status != "Rejected") request_exists = true
                                 }
                             })
+
+                            if(request_exists) return res.status(401).json({ msg: "Request for given file already exists" });
         
                             key = crypto.publicEncrypt(
                                 {
