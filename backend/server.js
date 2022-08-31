@@ -19,13 +19,20 @@ mongoose.connect(mongoURI, { useNewUrlParser: true }, { useUnifiedTopology: true
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', () => {
-  console.log("Connection Successfull");
+	console.log("Connection Successfull");
 });
 
 // Declaring API routes
 app.use('/api/auth', require('./routes/userRoute'));
 app.use('/api/files', require('./routes/filesRoute'));
 app.use('/api/requests', require('./routes/requestsRoute'))
+
+app.get('/api/demo', (req,res) => {
+	res.write("demo ")
+	res.write("demo1 ")
+	res.write("demo2 ")
+	res.end("demo3")
+}) 
 
 // Starting server
 const port = process.env.NODE_ENV || 5000;
