@@ -60,21 +60,25 @@ router.post('/register', (req, res) => {
                                 })
 
                                 user_files.save()
-                                .then(files => console.log("Created files"))
-                                .catch(err => res.status(401).json({ msg: err }));
-
-                                const user_requests = new Requests({
-                                    _id: user._id,
-                                    requests: []
+                                .then(files => {
+                                    console.log("Created files")
+                                    
+                                    const user_requests = new Requests({
+                                        _id: user._id,
+                                        requests: []
+                                    })
+    
+                                    user_requests.save()
+                                        .then(requests => {
+                                            console.log("Created requests")
+                                            
+                                            res.status(200).json({
+                                                msg: "Registration successful"
+                                            });
+                                        })
+                                        .catch(err => res.status(401).json({ msg: err }));
                                 })
-
-                                user_requests.save()
-                                    .then(requests => console.log("Created requests"))
-                                    .catch(err => res.status(401).json({ msg: err }));
-                                
-                                res.status(200).json({
-                                    msg: "Registration successful"
-                                });
+                                .catch(err => res.status(401).json({ msg: err }));
                             })
                             .catch(err => res.status(401).json({ msg: err }));
                     }
