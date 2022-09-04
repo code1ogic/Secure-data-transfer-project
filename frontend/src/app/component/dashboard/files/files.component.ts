@@ -39,6 +39,8 @@ export class FilesComponent implements OnInit {
   modalFailure: ElementRef | undefined;
 
   response: string = '';
+  successResponse : string = '';
+  errorResponse : string = '';
   id: any;
   allUsers: User[] = [];
   fileShareObj: any = {
@@ -52,9 +54,7 @@ export class FilesComponent implements OnInit {
   progress: number = 0;
   dropdownSettings:IDropdownSettings={};
   selectedUsers : any[] =[];
-  dropDownForm =  new UntypedFormGroup({
-    selectedUsers : new UntypedFormControl()
-  })
+  responseArr: any[] = [];
 
   constructor(private http: HttpClient, private dataService: DataService, private fb: UntypedFormBuilder) { }
 
@@ -90,6 +90,9 @@ export class FilesComponent implements OnInit {
     };
     this.selectedUsers = [];
     this.userSelected = false;
+    this.errorResponse = '';
+    this.successResponse = '';
+    this.responseArr = [];
   }
 
   selectFile(event: any) {
@@ -158,19 +161,70 @@ export class FilesComponent implements OnInit {
     return (n.toFixed(n < 10 && l > 0 ? 1 : 0) + ' ' + units[l]);
   }
 
-  shareFile() {
+  async shareFile() {
     this.fileShareObj.filename = this.selectedFile.filename;
     this.fileShareObj.filesize = this.selectedFile.actualfilesize;
     this.fileShareObj.sender_id = this.user_id;
-    this.fileShareObj.receiver_id = this.selectedUserId;
+    let i = 0;
+    this.responseArr = [];
+    for( i = 0; i < this.selectedUsers.length; i++) {
+      this.fileShareObj.receiver_id = this.selectedUsers[i]._id;
+       await this.handleRequest();
+       if(i == this.selectedUsers.length -1) {
+        this.displayResponse(this.responseArr);
+       }
+    }
 
-    this.dataService.sendRequest(this.fileShareObj).subscribe(res => {
-      this.response = res.msg;
-      this.success = true;
-    }, err => {
-      this.response = err.error.msg;
-      this.error = true;
+  }
+
+  handleRequest() {
+    return new Promise<void>((resolve, reject) => {
+      this.dataService.sendRequest(this.fileShareObj).subscribe(res => {
+        let resp = {
+          _id : '',
+          msg : '',
+          isError : false
+        }
+        resp._id = this.user_id;
+        resp.msg = res.msg;
+        this.responseArr.push(resp);
+        resolve()
+      }, err => {
+        let resp = {
+          _id : '',
+          msg : '',
+          isError : true
+        }
+        resp._id = this.user_id;
+        resp.msg = err.error.msg;
+        this.responseArr.push(resp);
+        resolve()
+      })
+   })
+
+  }
+
+  displayResponse(responseArr: any[]) {
+    let errArr : any[] =[];
+    let successArr : any[] = [];
+    responseArr.forEach(element => {
+      if(element.isError === true) {
+        element.name = this.getUserName(element._id);
+        errArr.push(element);
+      } else {
+        successArr.push(element);
+      }
     })
+
+    if(errArr.length > 0) {
+      this.error = true;
+      this.errorResponse = 'Failed to sent request to '+errArr.length +' user(s). Check developer window for more details.';
+      console.log(errArr)
+    }
+    if(successArr.length > 0) {
+      this.success = true;
+      this.successResponse = 'Request sent successfully to '+successArr.length +' user(s).';
+    }
 
   }
 
@@ -191,23 +245,20 @@ export class FilesComponent implements OnInit {
     window.location.reload();
   }
 
-  onItemSelect(item: any) {
-    this.selectedUsers.push(item);
-    console.log(this.selectedUsers)
+  getUserName(id : string) {
+    this.dataService.getUser(id).subscribe(res => {
+      return res.name;
+    }, err => {
+      return " ";
+    })
   }
-  onItemDeSelect(item: any) {
-    const newArr: any[] = this.selectedUsers.filter((element) => {
-      return element._id !== item._id;
-    });
-    this.selectedUsers = newArr;
-    console.log(this.selectedUsers)
-  }
+
   onSelectAll(items: any) {
      this.selectedUsers = items;
-     console.log(this.selectedUsers)
+     console.log(this.selectedUsers);
   }
   onUnSelectAll() {
       this.selectedUsers = [];
-      console.log(this.selectedUsers)
   }
 }
+

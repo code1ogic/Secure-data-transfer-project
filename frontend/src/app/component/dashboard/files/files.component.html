@@ -74,12 +74,12 @@
       <div class="modal-body">
         <div class="row" *ngIf="success">
           <div class="alert alert-success" role="alert">
-            {{response}}
+            {{successResponse}}
           </div>
         </div>
         <div class="row" *ngIf="error">
           <div class="alert alert-danger" role="alert">
-            <h6>{{response}}</h6>
+            <h6>{{errorResponse}}</h6>
           </div>
         </div>
 
@@ -135,14 +135,15 @@
           </div>
           <div class="col-9">
             <div>
-              <form [formGroup]="dropDownForm">
+              <form>
                 <ng-multiselect-dropdown
                    [settings]="dropdownSettings"
                    [data]="allUsers"
-                   formControlName="selectedUsers"
-                   (onSelect)="onItemSelect($event)"
+                   [(ngModel)]="selectedUsers"
+                   name="selectuser"
+
                   (onSelectAll)="onSelectAll($event)"
-                  (onDeSelect)="onItemDeSelect($event)"
+                  
                   (onDeSelectAll)="onUnSelectAll()">
                 </ng-multiselect-dropdown>
               </form>

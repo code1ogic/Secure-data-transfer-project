@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { DataService } from 'src/app/service/data.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -10,11 +11,16 @@ export class DashboardComponent implements OnInit {
 
   files : boolean = false;
   requests : boolean = false;
-
-  constructor(private router : Router) { }
+  userId : any = '';
+  userName : string = '';
+  constructor(private router : Router, private dataService : DataService) { }
 
   ngOnInit(): void {
     this.showFiles();
+    this.userId = localStorage.getItem('user_id');
+    this.dataService.getUser(this.userId).subscribe(res => {
+      this.userName = res.name;
+    })
   }
 
   setoff() {
@@ -24,7 +30,7 @@ export class DashboardComponent implements OnInit {
 
   showFiles() {
     this.setoff();
-    
+
     this.files = true;
   }
 
