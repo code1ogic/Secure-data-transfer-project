@@ -19,4 +19,11 @@ export class AuthService {
     return this.http.post(this.apiUrl+'register', user);
   }
 
+  isUserLoggedIn() : Boolean{
+    if(localStorage.getItem("user_id")) {
+      return true;
+    }
+    return false;
+  }
+
 }
