@@ -162,18 +162,18 @@ export class FilesComponent implements OnInit {
   }
 
   async shareFile() {
-    this.fileShareObj.filename = this.selectedFile.filename;
-    this.fileShareObj.filesize = this.selectedFile.actualfilesize;
-    this.fileShareObj.sender_id = this.user_id;
-    let i = 0;
-    this.responseArr = [];
-    for( i = 0; i < this.selectedUsers.length; i++) {
-      this.fileShareObj.receiver_id = this.selectedUsers[i]._id;
-       await this.handleRequest();
-       if(i == this.selectedUsers.length -1) {
-        this.displayResponse(this.responseArr);
-       }
-    }
+    // this.fileShareObj.filename = this.selectedFile.filename;
+    // this.fileShareObj.filesize = this.selectedFile.actualfilesize;
+    // this.fileShareObj.sender_id = this.user_id;
+    // let i = 0;
+    // this.responseArr = [];
+    // for( i = 0; i < this.selectedUsers.length; i++) {
+    //   this.fileShareObj.receiver_id = this.selectedUsers[i]._id;
+    //    await this.handleRequest();
+    //    if(i == this.selectedUsers.length -1) {
+    //     this.displayResponse(this.responseArr);
+    //    }
+    // }
 
   }
 
