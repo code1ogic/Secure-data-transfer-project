@@ -149,7 +149,7 @@ router.get('/getuser/:_id', (req, res) => {
     const current_user = req.params._id
 
     // Finding the user
-    User.findOne({current_user})
+    User.findOne({'_id':current_user})
         .then(user => {
 
             if(!user) return res.status(401).json({ msg: "User dosent exists" });

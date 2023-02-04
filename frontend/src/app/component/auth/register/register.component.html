@@ -1,80 +1,122 @@
-<div class="pt-5 body">
-  <div class="container ">
-    <div class="row">
-      <div class="col"></div>
-      <div class="col-md-4">
+  <div class="pt-5 body">
+    <div class="container ">
+      <div class="row">
+        <div class="col"></div>
+        <div class="col-md-4">
 
-        <form [formGroup]="userRegisterData" (ngSubmit)="userRegister()" class="bg-white p-3">
-          <h4 class="text-dark text-center">Register</h4>
-          <hr>
-          <div class="my-3">
-            <label for="exampleInputEmail1" class="form-label">Name </label>
-            <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" formControlName="name">
-            <div *ngIf="userRegisterData.get('name')?.invalid && (userRegisterData.get('name')?.dirty || userRegisterData.get('name')?.touched)" class="text-danger">
-              This is required field
+          <form [formGroup]="userRegisterData" (ngSubmit)="userRegister()" class="bg-white p-3">
+            <h4 class="text-dark text-center">Register</h4>
+            <hr>
+            <div class="my-3">
+              <label for="exampleInputEmail1" class="form-label">Name </label>
+              <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" formControlName="name">
+              <div *ngIf="userRegisterData.get('name')?.invalid && (userRegisterData.get('name')?.dirty || userRegisterData.get('name')?.touched)" class="text-danger">
+                This is required field
+              </div>
             </div>
-          </div>
-          <div class="my-3">
-            <label for="exampleInputEmail1" class="form-label">Username (Email)</label>
-            <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" formControlName="email">
-            <div *ngIf="userRegisterData.get('email')?.invalid && (userRegisterData.get('email')?.dirty || userRegisterData.get('email')?.touched)" class="text-danger">
-              This is required field
+            <div class="my-3">
+              <label for="exampleInputEmail1" class="form-label">Username (Email)</label>
+              <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" formControlName="email">
+              <div *ngIf="userRegisterData.get('email')?.invalid && (userRegisterData.get('email')?.dirty || userRegisterData.get('email')?.touched)" class="text-danger">
+                This is required field
+              </div>
             </div>
-          </div>
-          <div class="mb-3">
-            <label for="exampleInputPassword1" class="form-label" >Password</label>
-            <input type="password" class="form-control" id="exampleInputPassword1" formControlName="password">
-            <div *ngIf="userRegisterData.get('password')?.invalid && (userRegisterData.get('password')?.dirty || userRegisterData.get('password')?.touched)" class="text-danger">
-              This is required field
+            <div class="mb-3">
+              <label for="exampleInputPassword1" class="form-label" >Password</label>
+              <div class="input-group">
+              <input [type]="showPassword? 'text' : 'password'" class="form-control" id="exampleInputPassword1" formControlName="password">
+              <span class="input-group-text" id="basic-addon2" (click)="changePasswordProperty()">
+                <div *ngIf="showPassword">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye-fill" viewBox="0 0 16 16">
+                    <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z"/>
+                    <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z"/>
+                  </svg>
+                </div>
+                <div *ngIf="!showPassword">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye-slash-fill" viewBox="0 0 16 16">
+                    <path d="m10.79 12.912-1.614-1.615a3.5 3.5 0 0 1-4.474-4.474l-2.06-2.06C.938 6.278 0 8 0 8s3 5.5 8 5.5a7.029 7.029 0 0 0 2.79-.588zM5.21 3.088A7.028 7.028 0 0 1 8 2.5c5 0 8 5.5 8 5.5s-.939 1.721-2.641 3.238l-2.062-2.062a3.5 3.5 0 0 0-4.474-4.474L5.21 3.089z"/>
+                    <path d="M5.525 7.646a2.5 2.5 0 0 0 2.829 2.829l-2.83-2.829zm4.95.708-2.829-2.83a2.5 2.5 0 0 1 2.829 2.829zm3.171 6-12-12 .708-.708 12 12-.708.708z"/>
+                  </svg>
+                </div>
+              </span>
             </div>
-          </div>
-          <div class="mb-3">
-            <button type="submit" class="form-control btn btn-dark ms-auto mt-2" [disabled]="userRegisterData.invalid">Register</button>
-          </div>
+              <div *ngIf="userRegisterData.get('password')?.invalid && (userRegisterData.get('password')?.dirty || userRegisterData.get('password')?.touched)" class="text-danger">
+                This is required field
+              </div>
+            </div>
 
-          <div class="signup_link" >Already a member? <a href="/login">Login</a></div>
-        </form>
+            <div class="mb-3">
+              <label for="exampleInputPassword1" class="form-label" >Confirm Password</label>
+              <div class="input-group">
+                <input [type]="showConfirmPassword ? 'text' : 'password'" class="form-control" id="exampleInputPassword1" formControlName="confirmPassword">
+              <span class="input-group-text" id="basic-addon2" (click)="changeConfirmPasswordProperty()">
+                <div *ngIf="showConfirmPassword">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye-fill" viewBox="0 0 16 16">
+                    <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z"/>
+                    <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z"/>
+                  </svg>
+                </div>
+                <div *ngIf="!showConfirmPassword">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye-slash-fill" viewBox="0 0 16 16">
+                    <path d="m10.79 12.912-1.614-1.615a3.5 3.5 0 0 1-4.474-4.474l-2.06-2.06C.938 6.278 0 8 0 8s3 5.5 8 5.5a7.029 7.029 0 0 0 2.79-.588zM5.21 3.088A7.028 7.028 0 0 1 8 2.5c5 0 8 5.5 8 5.5s-.939 1.721-2.641 3.238l-2.062-2.062a3.5 3.5 0 0 0-4.474-4.474L5.21 3.089z"/>
+                    <path d="M5.525 7.646a2.5 2.5 0 0 0 2.829 2.829l-2.83-2.829zm4.95.708-2.829-2.83a2.5 2.5 0 0 1 2.829 2.829zm3.171 6-12-12 .708-.708 12 12-.708.708z"/>
+                  </svg>
+                </div>
+              </span>
+              </div>
 
+              <div *ngIf="userRegisterData.get('confirmPassword')?.invalid && (userRegisterData.get('confirmPassword')?.dirty || userRegisterData.get('confirmPassword')?.touched)" class="text-danger">
+                This is required field
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <button type="submit" class="form-control btn btn-dark ms-auto mt-2" [disabled]="userRegisterData.invalid">Register</button>
+            </div>
+
+            <div class="signup_link" >Already a member? <a href="/login">Login</a></div>
+          </form>
+
+        </div>
+        <div class="col"></div>
       </div>
-      <div class="col"></div>
     </div>
   </div>
-</div>
 
 
-<div>
-  <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" #successModal hidden></button>
-  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-body">
-          <div class="alert alert-success" role="alert">
-            {{response}}
+  <div>
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" #successModal hidden></button>
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-body">
+            <div class="alert alert-success" role="alert">
+              {{response}}
+            </div>
+            <button type="button" class="btn btn-primary ms-0 me-0" data-bs-dismiss="modal" [routerLink]="['/login']">Ok</button>
           </div>
-          <button type="button" class="btn btn-primary ms-0 me-0" data-bs-dismiss="modal" [routerLink]="['/login']">Ok</button>
         </div>
       </div>
+
     </div>
-
   </div>
-</div>
 
-<div>
-  <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#failModal" #failModal hidden></button>
-  <div class="modal fade" id="failModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-body">
-          <div class="alert alert-danger" role="alert">
-            {{response}}
+  <div>
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#failModal" #failModal hidden></button>
+    <div class="modal fade" id="failModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-body">
+            <div class="alert alert-danger" role="alert">
+              {{response}}
+            </div>
+            <button type="button" class="btn btn-primary ms-0 me-0" data-bs-dismiss="modal">Ok</button>
           </div>
-          <button type="button" class="btn btn-primary ms-0 me-0" data-bs-dismiss="modal">Ok</button>
         </div>
       </div>
-    </div>
 
+    </div>
   </div>
-</div>
 
 
 

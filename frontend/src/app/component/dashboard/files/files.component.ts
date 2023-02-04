@@ -55,6 +55,7 @@ export class FilesComponent implements OnInit {
   dropdownSettings:IDropdownSettings={};
   selectedUsers : any[] =[];
   responseArr: any[] = [];
+  supportedFileSize : number = 104857600; // 100 MB;
 
   constructor(private http: HttpClient, private dataService: DataService, private fb: UntypedFormBuilder) { }
 
@@ -110,6 +111,13 @@ export class FilesComponent implements OnInit {
     formData.append("_id", this.user_id);
     formData.append("filesize", file.size);
     formData.append("file", file);
+
+    if(file.size > this.supportedFileSize) {
+      this.myForm.reset();
+      this.response = 'File size more than ' + this.niceBytes(this.supportedFileSize.toString()) + ' is not supported.';
+      this.modalFailure?.nativeElement.click();
+      return;
+    }
 
     this.dataService.uploadFile(formData).subscribe(event => {
       switch (event.type) {

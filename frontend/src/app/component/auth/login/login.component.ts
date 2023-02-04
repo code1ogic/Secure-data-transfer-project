@@ -27,6 +27,7 @@ export class LoginComponent implements OnInit {
     email : new UntypedFormControl(),
     password : new UntypedFormControl()
   })
+  showPassword : boolean = false;
 
   constructor(private fb : UntypedFormBuilder, private auth : AuthService, private route : Router) { }
 
@@ -43,11 +44,16 @@ export class LoginComponent implements OnInit {
     this.userObject.password = this.userLoginData.value.password;
 
     this.auth.login(this.userObject).subscribe(res => {
-      this.route.navigate(['/dashboard']);
+      console.log(res);
       localStorage.setItem("user_id", res._id);
+      this.route.navigate(['/dashboard']);
     }, err => {
       this.response = err.error.msg;
       this.modal?.nativeElement.click();
     })
+  }
+
+  changePasswordProperty() {
+    this.showPassword = !this.showPassword;
   }
 }
