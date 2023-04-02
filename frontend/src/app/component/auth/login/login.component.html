@@ -4,7 +4,7 @@
       <div class="col"></div>
       <div class="col-md-4">
 
-        <form [formGroup]="userLoginData" (ngSubmit)="userLogin()" class="bg-white p-3">
+        <form [formGroup]="userLoginData" (ngSubmit)="userLogin()" class="bg-white p-3" *ngIf="!isLogingSuccess">
           <h4 class="text-dark text-center">Login</h4>
           <hr>
           <div class="my-3">
@@ -43,7 +43,25 @@
 
           <div class="signup_link" >Not a member? <a href="/register">Sign Up</a></div>
         </form>
+        
+        <form class="bg-white p-3" [formGroup]="userOTP" (ngSubmit)="verifyOtp()" *ngIf="isLogingSuccess">
+          <h4 class="text-dark text-center">Login</h4>
+          <hr>
+          <div class="my-3">
+            <label for="exampleInputEmail1" class="form-label">OTP</label>
+            <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="otpHelp" formControlName="otp">
+            <div *ngIf="userOTP.get('otp')?.invalid && (userOTP.get('otp')?.dirty || userOTP.get('otp')?.touched)" class="text-danger">
+              This is required field
+            </div>
+          </div>
+          
+          <div class="mb-3">
+            <button type="submit" class="form-control btn btn-dark ms-auto mt-2" [disabled]="userOTP.invalid">Verify</button>
+          </div>
+          <label for="exampleInputEmail1" class="form-label">Remaining attempts : {{count}}</label>
+        </form>
 
+        
       </div>
       <div class="col"></div>
     </div>
@@ -60,7 +78,7 @@
           <div class="alert alert-danger" role="alert">
             {{response}}
           </div>
-          <button type="button" class="btn btn-primary ms-0 me-0" data-bs-dismiss="modal">Ok</button>
+          <button type="button" class="btn btn-primary ms-0 me-0" data-bs-dismiss="modal" (click)="closeModel()">Ok</button>
         </div>
       </div>
     </div>
