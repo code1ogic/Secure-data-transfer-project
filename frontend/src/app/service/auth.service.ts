@@ -18,6 +18,10 @@ export class AuthService {
   register(user : User) : Observable<any> {
     return this.http.post(this.apiUrl+'register', user);
   }
+  
+  verifyOTP(user : User) : Observable<any> {
+    return this.http.post(this.apiUrl+'verifyOtp', user);
+  }
 
   isUserLoggedIn() : Boolean{
     if(localStorage.getItem("user_id")) {
